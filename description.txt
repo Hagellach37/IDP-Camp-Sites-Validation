@@ -1,0 +1,45 @@
+#Overview:#
+
+The 2015 Nepal earthquake struck Nepal on 25th April with a magnitude of 7.8, followed by aftershocks including a large magnitude 7.3 quake on 12 May. The initial earthquake struck with an epicentre in the mountains to the northwest of Kathmandu, and aftershocks around the city of Kathmandu. The later 7.3 earthquake struck to the northeast of Kathmandu towards Mount Everest and affecting regions in Southern China. The quakes killed at least 8000 people, and left many in desperate need of shelter, medical help, food and other aid. [Nepal Earthquake Openstreetmap Wiki](http://wiki.openstreetmap.org/wiki/2015_Nepal_earthquake)
+
+#This Task:#
+
+After the main earthquake many buildings are damaged and weakened and can easily be collapsed by aftershocks. For this reason, it is common for people to sleep outside in tent cities in open areas of the city (soccer fields, school yards, etc).
+
+Nevertheless, in some areas people soon returned back to their homes and left the tent cities while in other regions many people are still sleeping outside. Given this heterogeneous spatial and temporal dynamics it is hardly possible to estimate the number of displaced persons and their needs. Camps that accommodate many people today, may be abandoned next week and vice versa.
+
+The aim of this task is to monitor the temporal and spatial dynamics of camps of internally displaced persons (IDP) using satellite imagery to provide credible and up-to-date information.
+
+#Just answer this question: Did the size and structure of the IDP Camp change from April 27 to May 03?#
+ 
+Thus, you as volunteers are asked to classify the status of the camps into one of the following categories:
+
+##Increase:##
+The number of tents and or size of the IDP camp increased.
+
+
+##No changes:##
+Neither the number of tents nor size of the IDP camp did change.
+![](http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/no_changes.PNG)
+
+
+##Decrease:##
+The number of tents and or size of the IDP camp decreased and there are still tents left.
+![](http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/decrease.PNG)
+
+
+##Closure:##
+The IDP camp was closed, thus there are no tents anymore.
+![](http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/closure.PNG)
+
+
+##Skip:##
+There has never been an IDP camp at this side.
+![](http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/skip.PNG)
+
+
+#Zooming:#
+You may zoom the map by using the mouse-wheel.
+
+#Moving:#
+You can navigate the map by dragging it with the mouse. Please zoom first and then move the map.

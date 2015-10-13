@@ -1,0 +1,398 @@
+<div class="row">
+    <!-- Success and Error Messages for the user --> 
+    <div class="span6 offset2" style="height:50px">
+        <div id="success" class="alert alert-success" style="display:none;">
+            <a class="close">×</a>
+            Well done! Your answer was saved.
+        </div>
+        <div id="loading" class="alert alert-info" style="display:none;">
+            <a class="close">×</a>
+            Loading next task...
+        </div>
+        <div id="taskcompleted" class="alert alert-info" style="display:none;">
+            The task has been finished! Many thanks!
+        </div>
+        <div id="finish" class="alert alert-success" style="display:none;">
+            Congratulations! You have participated on all available tasks!
+            <br/>
+            <div class="alert-actions">
+                <a class="btn small" href="/">Go back</a>
+                <a class="btn small" href="/app">or take a look at other projects</a>
+            </div>
+        </div>
+        <div id="error" class="alert alert-error" style="display:none;">
+            <a class="close">×</a>
+            An error occurred! Please contact the site administrators!
+        </div>
+    </div> <!-- End Success and Error Messages for the user -->
+</div> <!-- End of Row -->
+
+<!-- see http://stackoverflow.com/questions/12121090/responsively-change-div-size-keeping-aspect-ratio -->
+<style>
+.wrapper {
+  width: 100%;
+  display: inline-block;
+  position: relative;
+}
+.wrapper:after {
+  padding-top: 50%;
+  /* 2:1 ratio */
+  display: block;
+  content: '';
+}
+.main {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+</style>
+
+<!-- Start Skeleton Row-->
+<div class="row skeleton"> 
+    <!-- Start of Question, Photo and Submission DIV -->
+    <div class="span12">
+        <!-- The question will be loaded here -->
+        <h1 id="question">Did the size and structure of the IDP Camp change?</h1>
+        
+        <!-- Photo DIV -->
+		
+        <div class="row-fluid">
+            <div class="span6">
+			  <h4>New imagery: May 03 (DigitalGlobe)</h4>
+			  <div id="leaflet_map_2" class="map" style="height:400px"></div>
+			</div>
+			<div class="span6">
+			  <h4>Old imagery: April 27 (Pleiades, DigitalGlobe)</h4>
+			  <div id="leaflet_map" class="map" style="height:400px"></div>
+			</div>
+        </div>
+        
+        <!-- Start DIV for the submission buttons -->
+        <div id="answer"> 
+            <!-- If the user clicks this button, the saved answer will be value="many"-->
+            <button class="btn btn-answer" value='increase' id='increase'><i class="icon icon-white icon-plus-sign"></i>Increase</button>
+            <!-- If the user clicks this button, the saved answer will be value="no"-->
+			<button class="btn btn-answer" value='no changes' id='no changes'><i class="icon icon-white icon-exclamation-sign"></i>No Changes</button>
+            <!-- If the user clicks this button, the saved answer will be value="no"-->
+            <button class="btn btn-answer" value='decrease' id='decrease'><i class="icon icon-white icon-minus-sign"></i>Decrease</button>
+            <!-- If the user clicks this button, the saved answer will be value="NoPhoto"-->
+			<button class="btn btn-answer" value='closure' id='closure'><i class="icon icon-white icon-remove-sign"></i>Closure</button>
+            <!-- If the user clicks this button, the saved answer will be value="NoPhoto"-->
+            <button class="btn btn-inverse btn-answer" value='Skip' id='Skip'><i class="icon icon-question-sign"></i>Skip this one!</button>
+        </div><!-- End of DIV for the submission buttons -->
+              
+        <!-- Feedback items for the user -->
+        <p>You are working on task: <span id="task-id" class="label label-warning">#</span><b>    Completed tasks:</b> <span id="done"></span></b>    <b>Rank:</b> <span id="rank"></span></b></p>
+        <!-- Progress bar for the user -->
+        
+        <!-- Information area that may be expanded -->
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#information">Show/Hide additional information</button>
+    </div><!-- End of Question, Photo and Submission DIV (column) -->
+</div><!-- End of Skeleton Row -->  
+
+<!-- Start of Information DIV -->
+<div class="row">    
+    <div class="span8.offset2, collapse" id="information">
+        <h1>Additional information</h1>
+        <p>In case of any problems or questions please contact <a href="Herfort@stud.uni-heidelberg.de">Herfort@stud.uni-heidelberg.de</a></p>
+        <h2>Hints</h2>
+        <ul>
+            <li><b>Short-cuts</b>: You may use short-cuts in order to speed up the questionare:<br>
+                I for "Increase", N for "No changes", D for "Decrease", C for "Closure" and S for "Skip".
+			<li><b>Zooming</b>: You may zoom the map by using the mouse-wheel or using <b>+</b> and <b>-</b> keys
+            <li><b>Moving</b>: You may navigate the map by dragging it with the mouse or using the arrow keys.</li>
+        </ul>
+    </div>
+</div><!-- End of Information Row -->
+
+<link rel="stylesheet" href="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/leaflet.css" />
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/leaflet.js"></script>
+<script src='http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/omnivore.js'></script>
+<script src='http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/Bing.js'></script>
+
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/Leaflet.draw.js"></script>
+<link rel="stylesheet" href="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/dist/leaflet.draw.css" />
+
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/Toolbar.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/Tooltip.js"></script>
+
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/ext/GeometryUtil.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/ext/LatLngUtil.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/ext/LineUtil.Intersect.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/ext/Polygon.Intersect.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/ext/Polyline.Intersect.js"></script>
+
+
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/draw/DrawToolbar.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/draw/handler/Draw.Feature.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/draw/handler/Draw.SimpleShape.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/draw/handler/Draw.Polyline.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/draw/handler/Draw.Circle.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/draw/handler/Draw.Marker.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/draw/handler/Draw.Polygon.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/draw/handler/Draw.Rectangle.js"></script>
+
+
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/edit/EditToolbar.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/edit/handler/EditToolbar.Edit.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/edit/handler/EditToolbar.Delete.js"></script>
+
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/Control.Draw.js"></script>
+
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/edit/handler/Edit.Poly.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/edit/handler/Edit.SimpleShape.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/edit/handler/Edit.Circle.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/edit/handler/Edit.Rectangle.js"></script>
+<script src="http://crowdmap.geog.uni-heidelberg.de/uploads/user_3/javascript/src/edit/handler/Edit.Marker.js"></script>
+
+
+<script>
+function show_map(GEO_OBJECT,GEO_OBJECT_2){
+    console.log("map should be shown");
+
+	//get geojson object
+	var geojson_object = GEO_OBJECT;
+	var geojson_object_1b = geojson_object.replace(/'/g,'"');
+	var geojson_object_2 = JSON.parse(geojson_object_1b);
+	var myGeoJson = L.geoJson(geojson_object_2);
+	
+	var geojson_object_a = GEO_OBJECT_2;
+	var geojson_object_a1b = geojson_object_a.replace(/'/g,'"');
+	var geojson_object_a2 = JSON.parse(geojson_object_a1b);
+	var myGeoJson_2 = L.geoJson(geojson_object_a2);
+	
+	console.log(myGeoJson_2)
+	
+	// map on the right side
+
+	if (typeof l_map !== 'undefined') {
+    // the variable is defined
+		l_map.remove()
+	}
+	
+	l_map = L.map('leaflet_map', {
+		zoom: 19,
+		minZoom: 15,
+		maxZoom: 20,
+		crs: L.CRS.EPSG3857,
+		dragging: true
+	});
+	
+	L.control.scale().addTo(l_map);
+	
+	pleiades_27_04 = L.tileLayer(
+		'http://imagery.openstreetmap.fr/tms/1.0.0/kathmandu_pleiades_20150427/{z}/{x}/{y}  ',
+		{attribution: 'Pleiades',
+		maxZoom: 20,
+		opacity: 1.0
+		}
+	)
+	
+	pleiades_29_11 = L.tileLayer(
+		'http://imagery.openstreetmap.fr/tms/1.0.0/kathmandu_pleiades_20141129/{z}/{x}/{y}  ',
+		{attribution: 'Pleiades',
+		maxZoom: 20,
+		opacity: 1.0
+		}
+	)
+	
+	l_map.addLayer(pleiades_27_04);
+	
+	digitalglobe_27_04 = L.tileLayer(
+		' http://mw1.gstatic.com/crisisresponse/firstlook/2015/firstlook_PO_054329691010_01_2015_04_27_maptiles/{x}_{y}_{z}.png ',
+		{attribution: 'Digital Globe',
+		maxZoom: 20,
+		opacity: 1.0
+		}
+	)
+	digitalglobe_27_04_2 = L.tileLayer(
+		' http://mw1.gstatic.com/crisisresponse/firstlook/2015/firstlook_PO_054327454030_01_2015_04_27_maptiles/{x}_{y}_{z}.png  ',
+		{attribution: 'Digital Globe',
+		maxZoom: 20,
+		opacity: 1.0
+		}
+	)
+	
+	baselayer = {
+			
+			}
+	
+	overlays = {
+		"IDP Camp": myGeoJson,
+		"Pleiades 27-04-2015": pleiades_27_04,
+		"DigitalGlobe 27-04-2015 (1)": digitalglobe_27_04,
+		"DigitalGlobe 27-04-2015 (2)": digitalglobe_27_04_2,
+		"Pleiades 29-11-2014": pleiades_29_11
+	}
+
+	L.control.layers(baselayer, overlays, {collapsed: true}).addTo(l_map)
+	
+	
+	l_map.addLayer(myGeoJson)
+	myGeoJson.setStyle({opacity: 0.3, fill: false})
+	l_map.fitBounds(myGeoJson)
+	l_map.zoomOut()
+	
+	
+	
+	// map on the left side
+	
+	if (typeof l_map_2 !== 'undefined') {
+    // the variable is defined
+		l_map_2.remove()
+	}
+
+	l_map_2 = L.map('leaflet_map_2', {
+		zoom: 19,
+		minZoom: 15,
+		maxZoom: 20,
+		crs: L.CRS.EPSG3857,
+		dragging: true
+	});
+	
+	L.control.scale().addTo(l_map_2);
+	
+
+	digitalglobe_03_05 = L.tileLayer(
+		'http://mw1.gstatic.com/crisisresponse/firstlook/2015/firstlook_PO_054342556010_01_2015_05_03_maptiles/{x}_{y}_{z}.png ',
+		{attribution: 'Digital Globe',
+		maxZoom: 20
+		}
+	)
+	l_map_2.addLayer(digitalglobe_03_05)
+	
+	l_map_2.addLayer(myGeoJson_2)
+	myGeoJson_2.setStyle({opacity: 0.3, fill: false})
+	l_map_2.fitBounds(myGeoJson_2)
+	l_map_2.zoomOut()
+	
+	baselayer = {
+			
+			}
+	
+	overlays = {
+		"IDP Camp 2": myGeoJson_2,
+		"DigitalGlobe 03-05-2015 (2)": digitalglobe_03_05
+	}
+
+	L.control.layers(baselayer, overlays, {collapsed: true}).addTo(l_map_2)
+	
+}
+
+function loadUserProgress() {
+    pybossa.userProgress('shelter_dynamics').done(function(data){
+        var pct = Math.round((data.done*100)/data.total);
+		
+		console.log('completed: '+pct+'%')
+		
+		var completed = data.done;
+        var rankTitle = "Volunteer";
+
+        if(completed>30 && completed <= 100){
+            rankTitle = "MSF Intern";
+        }
+        else if(completed>100 && completed <= 200){
+            rankTitle = "New FEMA Recruit";
+        }
+        else if(completed>200 && completed <= 400){
+            rankTitle = "UN Humanitarian";
+        }
+        else if(completed>400 && completed <= 600){
+            rankTitle = "Senior UN Official";
+        }
+        else if(completed>600 && completed <= 1000){
+            rankTitle = "UN Country Director";
+        }
+        else if(completed>1000 && completed <= 2000){
+            rankTitle = "Head of UN OCHA";
+        }
+        else if(completed>2000 ){
+            rankTitle = "UN Secretary General";
+        }
+
+         $("#rank").text(rankTitle);
+		 $("#done").text(completed+' ('+pct+'%)');
+		
+    });
+}
+
+pybossa.taskLoaded(function(task, deferred) {
+    console.log("task was loaded");
+    if (!$.isEmptyObject(task) ) {
+        console.log("task is not empty")
+        console.log(task.info.GeoJSON_object);
+		console.log(task.info.GeoJSON_object_trans);
+    }
+    deferred.resolve(task);
+    console.log("taskLoaded done");
+});
+
+pybossa.presentTask(function(task, deferred) {
+    console.log("task should be presented");
+    if (!$.isEmptyObject(task) ) {
+        loadUserProgress();
+        console.log("user progress updated");
+		// this will scroll down to the right place, so that we "hide" the heading.
+        window.scroll(0,150);
+           
+		show_map(task.info.GeoJSON_object,task.info.GeoJSON_object_trans);
+        console.log("created map");
+		
+        $('#task-id').html(task.id);
+        $('.btn-answer').off('click').on('click', function(evt) {
+            var btn = $(this);
+			answer = btn.attr("value")
+            console.log("clicked button: " + answer);
+            if (typeof answer != 'undefined') {
+                pybossa.saveTask(task.id, answer).done(function() {
+                    deferred.resolve();
+                });
+                $("#loading").fadeIn(500);
+            }
+            else {
+                $("#error").show();
+            }
+        });
+        
+        // establish short-cuts for submission buttons
+        $(document).keydown(function(e) {
+            console.log(e);
+            console.log(e.key);
+            switch (e.key) {
+                case 'i': case 'I':
+                    console.log(e.keyKode); $('#increase').click();
+                    return false; //"return false" will avoid further events
+                case 'n': case 'N':
+                    console.log(e.keyKode); $('#no changes').click();
+                    return false; //"return false" will avoid further events
+                case 'd': case 'D':
+                    console.log(e.keyKode); $('#decrease').click();
+                    return false; //"return false" will avoid further events
+				case 'c': case 'C':
+                    console.log(e.keyKode); $('#closure').click();
+                    return false; //"return false" will avoid further events
+				case 's': case 'S':
+                    console.log(e.keyKode); $('#skip').click();
+                    return false; //"return false" will avoid further events
+            }
+            return; //using "return" other attached events will execute
+        });
+        
+        $("#loading").hide();
+    }
+    else {
+        $(".skeleton").hide();
+        $("#loading").hide();
+        $("#finish").fadeIn(500);
+    }
+  
+    console.log("presentTask done");
+});
+
+pybossa.run('shelter_dynamics');
+
+
+</script>
